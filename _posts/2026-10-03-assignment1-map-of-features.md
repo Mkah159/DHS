@@ -10,7 +10,7 @@ tags:
 
 
 
-For this project, I chose **Poland** as the country I wanted to study using GeoNames. Before starting, I knew that Poland is a large country in Central Europe with major cities such as Warsaw, Kraków, Gdańsk, and Wrocław. I also knew that the north has many lakes while the south has mountain areas, so I expected the data to show clear regional differences.
+For this project, I chose **Poland** because it is a country that I already had a personal connection with. I have visited places such as **Kraków, Gdańsk, and Zakopane**, and those trips stayed with me because of the different tourist attractions and landscapes I experienced in each place. Kraków stood out to me because of its historic center, architecture, and the amount of activity around the city. Gdańsk felt very different because of its northern location, waterfront setting, and unique city atmosphere. Zakopane was probably the clearest example of how different Poland’s geography can be, because the mountain landscape there is very different from the flatter parts of the country. Because I had already visited these places, I was interested to see whether the GeoNames data would show some of the same differences that I remembered from traveling in Poland. I already knew that the north has many lakes and that the south has mountain areas, so I expected the dataset to show clear regional patterns.
 
 The Poland GeoNames file contained **58,566 rows** and 19 variables. Each row represents a geographic feature. GeoNames organizes places using feature codes. The largest category was `PPL`, which represents populated places, with **43,785 records**.
 
@@ -39,9 +39,7 @@ I created an interactive Leaflet map that allows users to turn the five layers o
   </iframe>
 </div>
 
-If the map does not load inside the page, it can also be opened directly here:
 
-[Open the full interactive Poland map]({{ '/assets/maps/PL_featuremap.html' | relative_url }})
 
 The image below shows the map with **all five layers turned on**.
 
@@ -75,7 +73,11 @@ The **hotel layer** was also interesting because I could view it by itself.
 
 *Figure 2. The interactive map with only the Hotels layer selected.*
 
-Looking at hotels by themselves made the pattern easier to see. Hotels appeared in many parts of Poland, including around larger cities. However, more hotel points do not automatically mean more tourism; they may also reflect better GeoNames coverage. This reminded me that a map can show both geography and the strengths or weaknesses of a dataset.
+Looking at hotels by themselves made the pattern easier to see. This layer was especially interesting to me because I had personally visited tourist places such as **Kraków, Gdańsk, and Zakopane**. When I saw hotel points around major cities and tourist areas, I could connect the data to places I had actually experienced.
+
+For example, Kraków and Gdańsk both felt very active and popular with visitors when I was there, while Zakopane had a very different type of tourism connected to the mountains and outdoor activities. Seeing hotel locations on the map made the data feel more real to me because I could connect some of the points to places I remembered visiting.
+
+At the same time, I had to be careful not to assume that more hotel points automatically means more tourism. A larger number of points could also mean that GeoNames has better coverage in that area. This reminded me that the map shows both real geographic patterns and the limits of the dataset.
 
 ## Missing Data and Uneven Coverage
 
@@ -135,6 +137,8 @@ This connects to Kitchin and Lauriault's idea that data are not completely "raw.
 
 The map is useful, but it should not be treated as the complete truth about Poland.
 
+My personal experience also affected how I read the map. Because I had already visited Kraków, Gdańsk, and Zakopane, I naturally paid more attention to those areas. This made me realize that the person using the data also brings their own memories and expectations into the analysis. Two people could look at the same map and focus on very different patterns depending on what they already know about Poland.
+
 ## Using This Workflow in the Future
 
 I think this workflow could be useful in other courses or projects. I could use it to map historical sites, environmental information, transportation systems, cultural locations, or population data.
@@ -153,10 +157,18 @@ I also completed the optional bonus work by including more than three clickable 
 
 More importantly, I learned that data should not automatically be treated as a perfect representation of reality. The Poland GeoNames dataset contains a large amount of useful geographic information, but it still depends on where the information came from, how it was collected, how features were classified, and how complete the coverage is.
 
+This project was more interesting to me because Poland was not just a random country I selected from a list. I had already visited **Kraków, Gdańsk, and Zakopane**, so I was able to connect the digital map to places and landscapes I remembered in real life.
+
+Seeing mountain features in the south reminded me of Zakopane, while looking at hotels and city-related features made me think about my experiences in Kraków and Gdańsk. This helped me understand that mapping is not only about points and codes. It can also connect data to real places, memories, and experiences.
+
+At the same time, the project taught me to separate my personal experience from what the dataset can actually prove. My memories helped me ask questions and notice patterns, but the GeoNames data still has to be studied critically.
+
 My map gives one useful view of Poland, but it is not the only possible view. Changing the feature codes would create a different map and could lead to different observations.
 
-This is what made the project interesting to me. I was not only learning how to create an interactive map. I was also learning how to question the data behind the map and understand how digital data shapes the way we see places.
+This is what made the project interesting to me. I was not only learning how to create an interactive map. I was also learning how to connect data with real places I had experienced, while still questioning the data behind the map and understanding how digital data shapes the way we see places.
 
 ## AI use statement
 
-I used Codex to publish the text I supplied, embed my existing interactive map, capture two screenshots from it, and update the website content.
+I used ChatGPT to help me navigate around GitHub and understand what files and codes to put aswell as troubleshooting parts of the R and website workflow.
+
+**READY FOR GRADING**
