@@ -10,218 +10,76 @@ date: 2026-11-08
 
 ## Introduction
 
-Geocoding is the process of connecting geographic references to locations on a map. Although this might seem straightforward, identifying a place mentioned in a text is not always simple. A name can refer to several different locations, some places are difficult to identify, and others might not appear in geographic databases at all.
+Geocoding connects references in a text to locations on a map. The challenge is that a place name can refer to several locations, and some of the places described in a text may be hard to find in a geographic database. We explored these problems using Ross Goodwin’s *1 the Road*, an experimental novel published by Jean Boîte Éditions in 2018. Goodwin equipped a Cadillac with a camera, microphone, GPS system, and computer that generated text during a road trip from New York to New Orleans. Geography shaped the writing process because information gathered along the route helped determine what appeared in the book.
 
-In this assignment, we explored the differences between manual and automated geocoding using Ross Goodwin's *1 the Road*. Our objective was to examine how humans and computers identify geographic information and how their decisions affect the resulting maps.
-
-*1 the Road*, published by Jean Boîte Éditions in 2018, is an experimental novel created using artificial intelligence. Goodwin equipped a Cadillac with a camera, microphone, GPS system, and computer capable of generating text during a road trip from New York to New Orleans.
-
-The novel is particularly interesting for digital humanities because its text was generated through interactions between technology and physical environments. Geographic information is therefore an important part of both the writing process and the story itself.
-
-For our analysis, we compared three geographic datasets: manually annotated locations from Recogito, automated geocoding using spaCy and geopy, and a third dataset produced through an LLM-assisted workflow.
-
-By comparing these methods, we wanted to understand whether automated systems could identify places as accurately as human annotators and what kinds of geographic information might be lost or misinterpreted.
+We compared three datasets produced from the text: manual annotations from Recogito, an automated dataset generated with spaCy and geopy, and an LLM-assisted dataset. Mapping these datasets side by side let us ask which references each method captured, where the methods agreed, and what happened when the same name was assigned to different locations. The results show how decisions about context and evidence affect the geography readers see on the map.
 
 ## 1. Our Manual Annotation Process
 
-We completed this assignment as a pair, working on Section 5 of *1 the Road*.
+We worked as a pair on Section 5 of *1 the Road*. Mohamed read and examined the assigned section, and Ahmed marked geographic references in Recogito. We used the surrounding text to decide whether a phrase referred to a place, then searched GeoNames and Google Maps for coordinates. The Recogito text came from optical character recognition (OCR), which can split words or misread letters. This added another layer of uncertainty because an odd spelling could reflect a problem in the digital transcription or a name that was genuinely difficult to identify.
 
-We divided our responsibilities between reading and annotation. Mohamed focused on reading and examining the assigned section, while Ahmed was responsible for annotating geographic references using Recogito.
-
-Recogito allows users to highlight geographic references in a text and associate them with locations. This involves identifying place names and searching geographic databases for their corresponding coordinates.
-
-One difficulty we encountered was finding reliable latitude and longitude coordinates for certain locations.
-
-Although we used GeoNames and Google Maps to search for geographic information, some places were difficult to identify. In certain cases, we could not find sufficient information to establish their coordinates confidently.
-
-Following Professor Wrisley's instructions in class, Ahmed left these locations without coordinates rather than selecting an uncertain location.
-
-This was an important part of the manual annotation process. It showed us that identifying a geographic reference does not necessarily mean that its location can be determined accurately.
-
-Manual geocoding involves more than simply recognizing a place name. It also requires interpreting the surrounding text and deciding whether the available geographic information is reliable.
-
-![Manual Recogito map]({{ '/assets/assignment2/manual_recogito.png' | relative_url }})
-
-*Figure 1. Geographic locations from the manually annotated Recogito dataset.*
+Finding a reference and locating it were two separate decisions. Sometimes the passage made it clear that a location was being mentioned, but the information available in the text and in our searches was too limited to identify a reliable match. Following Professor Wrisley’s instructions, we left the coordinates blank in those cases. This kept the reference in the dataset while recording the uncertainty about where it belonged.
 
 ## 2. Downloading and Preparing the Data
 
-After completing the annotations, we exported the Recogito data into CSV format.
+After annotating the text, we exported the Recogito data as a CSV on 8 November 2026. The export contained place names, annotation information, and coordinates where available. We used cleaned latitude and longitude columns to bring together coordinates that had been recorded in different fields, including comments and tags. The combined class dataset contained 246 annotation records, of which 235 had coordinates and 11 did not. These totals describe the class dataset, which includes our work on Section 5. The [Recogito CSV]({{ '/assets/assignment2/recogito.csv' | relative_url }}) is available in our GitHub repository.
 
-The exported dataset contained place names, annotation information, and geographic coordinates when available.
+Figure 1 shows the points that could be plotted from the cleaned class annotations. Two gaps stand out, one between Virginia and North Carolina and another between Georgia and Mississippi. A blank stretch of the map and a record with missing coordinates tell us different things. The eleven blank coordinate records document places that were annotated but could not be plotted. A gap on the map could also reflect what the novel mentions or how much of the text the class was able to annotate in the available time. The map alone gives us no way to assign either gap to a particular cause.
 
-The dataset used for our analysis also included cleaned coordinate columns. These allowed coordinates recorded in different fields, including comments and tags, to be represented consistently.
+<p align="center">
+  <img src="{{ '/assets/assignment2/manual_recogito.png' | relative_url }}" alt="Map of the combined Recogito annotations" width="75%">
+</p>
 
-The final manual dataset contained 246 annotation records, of which 235 had coordinates and 11 did not.
+*Figure 1. Screenshot of the interactive map showing the cleaned, combined Recogito annotations.*
 
-These numbers describe the combined annotation dataset, rather than only the annotations completed by our pair.
-
-The missing coordinates were particularly interesting because they demonstrated a limitation of geographic identification. Even when a place could be recognized in a text, identifying its exact location was sometimes impossible.
-
-For transparency, we have included our Recogito dataset in our GitHub repository.
-
-[View our Assignment 2 data folder]({{ '/assets/assignment2/' | relative_url }})
+The distinction matters when interpreting the route. A map marker is evidence of an annotation with coordinates. A record without coordinates can still tell us which reference was difficult to resolve. Looking at the CSV alongside the map helps us separate what was recorded from what can be displayed on the map for readers to compare.
 
 ## 3. Automated Geocoding
 
-The second part of the assignment involved comparing our manual annotations with automated geographic identification.
+Professor Wrisley provided the two automated datasets. In the first workflow, spaCy identified likely place names and geopy was used to look up coordinates. The second used an LLM-assisted transcription and tagging workflow that also used spaCy and geopy. Both workflows automate the identification and lookup stages, which makes it possible to process many references quickly. An error can still enter at either stage. A system can interpret a string as a place even when it has another function in the text, or it can recognize a real place name and select coordinates for the wrong location.
 
-We worked with two automated datasets provided for the assignment.
+The two automated datasets contained 341 and 374 annotation records. These counts include repeated references, so they measure recorded mentions rather than the number of unique places. Figure 2 compares the two automated layers at a world scale. The layers broadly agree along parts of the U.S. route, but both also show points overseas. For a text generated during a U.S. road trip, a cluster of overseas points is a reason to inspect individual matches and check how each place is used in the text. A world view makes those matches visible. A close view of the route helps us see where two matches land near each other, as Wrisley demonstrated with the points labeled St. Paul’s.
 
-The first used spaCy, a Python natural language processing library, to identify geographic entities. Geopy was then used to obtain coordinates for recognized locations.
+<!-- Upload automatic_comparison.png to assets/assignment2. Use a world view with both automated layers on, the manual layer off, and the legend visible. -->
 
-The second dataset was produced through an LLM-assisted workflow that combined geographic entity identification with coordinate lookup.
+<p align="center">
+  <img src="{{ '/assets/assignment2/automatic_comparison.png' | relative_url }}" alt="World map comparing both automated geocoding methods" width="85%">
+</p>
 
-Unlike manual geocoding, these approaches automate parts of the process.
-
-Rather than relying on a person to examine each geographic reference individually, the system identifies likely place names and attempts to associate them with locations.
-
-This can make automated geocoding particularly useful when working with large amounts of text. However, it can also introduce errors, especially when a place name is ambiguous.
-
-Our automated datasets contained 341 and 374 annotation records respectively. Of these, 248 and 281 records had coordinates.
-
-These numbers also include repeated geographic references, meaning they should not be interpreted as counts of unique places.
-
-![Automated spaCy map]({{ '/assets/assignment2/automatic_spacy.png' | relative_url }})
-
-*Figure 2. Geographic locations identified through the automated spaCy geocoding process.*
+*Figure 2. World-view screenshot comparing the spaCy + geopy and LLM-assisted datasets.*
 
 ## 4. Comparing Manual and Automated Geocoding
 
-One of the most interesting discoveries came from comparing how different methods identified the same place names.
+Florence illustrates how the same place name can lead to different coordinates. The manual dataset placed Florence in South Carolina, while the automated results included a match in Italy. Wrisley demonstrated the ambiguity by searching GeoNames for *Florence*. The search returned several possible locations, and Florence, Italy appeared above Florence, South Carolina. This gives one possible explanation for the mismatch. When the lookup uses only the name, the order of the candidates can determine which place is returned. The surrounding passage and the road trip’s route give a reader additional clues for choosing among those candidates. A result can therefore look convincing in the dataset because it has a valid name and coordinates even when it points to the wrong Florence.
 
-For example, our manual dataset associated Florence with coordinates in South Carolina, United States. However, the automated datasets associated Florence with coordinates in Italy.
+The comparison also helps us examine the manual layer more critically. Several manual points sit apart from the apparent route in the southeastern United States. A point off the route could be an annotation error, or it could be a place that the text mentions without the car passing through it. To distinguish those cases, we would need to open the point, find the reference in the text, and compare the passage with the assigned coordinates. This is the same kind of contextual check that makes the Florence example useful.
 
-A similar difference appeared with Augusta. Our manual dataset placed Augusta in Georgia, United States, while the automated datasets returned coordinates in Germany.
-
-Another example was La Grange. The manual annotations placed it in Georgia, United States, while the automated datasets returned a location in France.
-
-These examples demonstrate an important limitation of automated geographic identification.
-
-The automated systems were able to recognize these names as geographic references, but the coordinates they selected did not always agree with the manual annotations.
-
-This does not automatically prove that every manually selected coordinate is correct. However, it demonstrates why geographic context matters.
-
-For example, when reading a text about an American road trip, a human annotator might consider the journey's route and surrounding locations before deciding which Florence is being referenced.
-
-An automated system may instead select a prominent matching location from its geographic database.
-
-Consequently, the geographic information produced by automated systems can appear precise even when the underlying interpretation is uncertain.
-
-Our findings suggest that geographic accuracy depends not only on recognizing a place name but also on selecting the appropriate location.
+Agreement across layers can help us decide which references to investigate first. If two methods place a name far apart, the difference gives us a specific passage to revisit. If they agree, that gives us a candidate location to check. Since both automated workflows used some of the same tools, their agreement can also reflect a shared lookup choice.
 
 ## 5. Visualizing the Three Datasets
 
-We used the provided R notebook in Posit Cloud to create an interactive Leaflet map.
+We used the R notebook to create the interactive Leaflet map in Figure 3. The map gives each dataset its own layer and color. Use the checkboxes in the upper-right legend to turn the layers on or off. Start by comparing the two automated layers at a wide zoom to see the overseas matches. Then zoom in on the southeastern United States and turn on the Recogito layer to compare the manual points with the automated ones. The two zoom levels help answer different questions. The world view shows how far a match can fall from the route, while the closer view shows how closely the methods agree in the region the car traveled through.
 
-The map combines the three geographic datasets into separate layers, allowing us to compare their spatial patterns.
-
-One advantage of this visualization is that the layers can be displayed together or individually. This makes it easier to observe differences between the manual and automated approaches.
-
-The map also uses different colors to distinguish the datasets.
-
-Additionally, slight changes to point positions, known as jitter, help prevent overlapping markers from hiding one another.
-
-This is useful because several references may share the same coordinates. Without jitter, multiple records could appear as a single point.
-
-### Interactive Three-Layer Map
+The notebook also uses jitter, which slightly shifts plotted markers so that overlapping points are easier to see. This helps when several records would otherwise appear as one dot. Small differences in marker positions should therefore be interpreted with care, especially at close zoom. The underlying records are the better place to check whether two methods actually assigned different coordinates.
 
 <iframe
   src="{{ '/assets/assignment2/interactive_map.html' | relative_url }}"
-  width="100%"
-  height="600"
-  style="border: 1px solid #ccc;"
-  title="Interactive map comparing manual and automated geocoding">
+  title="Interactive map comparing the three geocoding methods"
+  style="width: 100%; height: 600px; border: 0;">
 </iframe>
 
-*Figure 3. Interactive Leaflet map comparing the three geocoding datasets. The layers can be selected individually to examine differences between methods.*
-
-![Three-layer map]({{ '/assets/assignment2/all_three_layers.png' | relative_url }})
-
-*Figure 4. Screenshot showing the three geographic datasets displayed together.*
-
-The visualization demonstrates how the same text can produce different geographic representations depending on the method used.
-
-Although an automated dataset may contain more identified locations, a larger number of points does not necessarily mean that it is more accurate.
-
-Some points may represent incorrectly matched locations, while others may reflect references that were not confidently identified during manual annotation.
-
-This highlights an important distinction between completeness and accuracy.
+*Figure 3. Interactive Leaflet map comparing the manual, spaCy + geopy, and LLM-assisted layers.*
 
 ## 6. Geographic Data and the Role of Interpretation
 
-Kenric McDowell's introduction to *1 the Road* provides an important perspective on the relationship between technology and geographic information.
-
-McDowell explains that the system received information about nearby businesses and locations through the Foursquare API.
-
-This meant that the text was influenced by the geographic information available through a commercial digital platform.
-
-Locations such as gas stations and fast-food restaurants were particularly prominent in the information available to the system.
-
-This raises an interesting question: Does the text represent the actual geographic environment, or does it represent the environment as recorded by a particular technology?
-
-The distinction matters because geographic databases are not necessarily complete or neutral.
-
-Some places are documented extensively, while others may have limited information or may be absent from commonly used databases.
-
-This can affect both the original AI-generated text and the automated methods used to map it.
-
-For instance, a commercial location with extensive online information might be easier to identify than a small or unfamiliar landmark.
-
-Our experience with Recogito demonstrated this problem on a smaller scale. Some geographic references were difficult to locate even after searching multiple resources.
-
-This suggests that access to geographic information plays an important role in determining which locations appear in digital maps.
+In the introduction to *1 the Road*, McDowell explains that the Foursquare API exposed nearby businesses and places to the system generating the text. Examples include gas stations, fast-food restaurants, and the Biloxi Hard Rock Cafe (p. 28). The commercial platform shaped which parts of the landscape were available to the system, and those choices affected which places could later appear in our annotations. A business with a listing was easier for the system to encounter than a nearby place with little or no presence in the platform. Our maps therefore reflect several stages of selection, beginning with the geographic information available to Goodwin’s system and continuing with the way we interpreted the resulting text.
 
 ## 7. Human Judgment Versus Automation
 
-Our comparison revealed advantages and limitations in both approaches.
-
-Manual geocoding allows annotators to consider the surrounding text and investigate ambiguous locations.
-
-Human annotators can also recognize when there is insufficient evidence to assign coordinates.
-
-However, manual annotation requires time and effort. It also depends on the annotator's interpretation and knowledge.
-
-Automated geocoding, by contrast, can process large amounts of information relatively quickly.
-
-This makes it useful for projects involving extensive textual datasets.
-
-Nevertheless, the examples of Florence, Augusta, and La Grange show that automated systems may associate place names with geographically different locations.
-
-The problem is not necessarily that a computer fails to recognize a geographic reference. Instead, it may recognize the name but select an inappropriate match.
-
-Another important observation is that automation does not eliminate human decisions entirely.
-
-Humans still determine which tools to use, what geographic databases to consult, and how the results should be displayed.
-
-Even map design choices, such as marker colors and jitter, influence how users interpret the results.
-
-[**Drucker reading connection to be added after Professor Wrisley confirms the assigned chapter.**]
+Human judgment enters throughout the process. Annotators decide when a reference is specific enough to map. The people who build an automated workflow choose the tools, the databases, and how to handle ambiguous matches. Mapmakers also choose the basemap, colors, and amount of jitter. A satellite basemap can emphasize the landscape, while a street map can make named roads and settlements easier to follow. These design decisions affect which patterns readers notice when they compare the datasets.
 
 ## Conclusion
 
-This assignment helped us understand that geocoding involves interpretation as well as technology.
+Comparing the three layers showed how easily coverage and accuracy can be confused. The automated datasets contain more annotation records, but the Florence example shows that a successful coordinate lookup can still produce a misleading point. The manual dataset preserves some uncertainty through blank coordinates, and its gaps and isolated points also require interpretation. Bringing the layers together makes those differences visible and gives us a way to return to the text and ask what evidence supports each match.
 
-Through our work with Recogito, we experienced the challenges of identifying geographic information manually, particularly when reliable coordinates were unavailable.
-
-Comparing the three datasets also demonstrated how automated systems can produce different geographic interpretations of the same text.
-
-The differences involving Florence, Augusta, and La Grange were particularly useful because they showed how geographic ambiguity can affect automated results.
-
-Ultimately, our findings suggest that manual and automated geocoding should not necessarily be viewed as competing methods.
-
-Automated tools can help researchers process large amounts of information, while human interpretation remains important for evaluating uncertain or ambiguous results.
-
-For digital humanities, the challenge is not simply to produce more geographic data, but to understand how that data was created, interpreted, and represented.
-
-Mapping *1 the Road* showed us that even a seemingly straightforward geographic coordinate can involve several layers of human and technological decision-making.
-
-## References
-
-- Goodwin, Ross. *1 the Road*. Jean Boîte Éditions, 2018.
-- McDowell, Kenric. Introduction to *1 the Road*, 2018.
-- Wrisley, David. *Assignment 2: Manual Geocoding vs. Automated Geocoding*, DHS Fall 2026.
-- spaCy. Natural Language Processing Library.
-- GeoNames. Geographic Database.
-- OpenStreetMap. Open Geographic Data.
-- Drucker, Johanna. [Specific assigned chapter to be confirmed.]
+**READY FOR GRADING**
